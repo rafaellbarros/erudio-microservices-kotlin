@@ -1,6 +1,7 @@
 package br.com.rafaellbarros.controller
 
-import br.com.rafaellbarros.model.dto.PersonDTO
+import br.com.rafaellbarros.model.dto.v1.PersonDTO
+import br.com.rafaellbarros.model.dto.v2.PersonDTO as PersonDTOV2
 import br.com.rafaellbarros.services.PersonService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/person/v1")
 class PersonController {
 
     @Autowired
@@ -27,6 +28,11 @@ class PersonController {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody person: PersonDTO): PersonDTO {
         return service.create(person)
+    }
+
+    @PostMapping(value = ["/v2"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun createV2(@RequestBody person: PersonDTOV2): PersonDTOV2 {
+        return service.createV2(person)
     }
 
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])

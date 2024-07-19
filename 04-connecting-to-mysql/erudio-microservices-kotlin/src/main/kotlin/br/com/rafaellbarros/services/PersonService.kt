@@ -1,9 +1,11 @@
 package br.com.rafaellbarros.services
 
 import br.com.rafaellbarros.exceptions.ResourceNotFoundException
-import br.com.rafaellbarros.model.dto.PersonDTO
+import br.com.rafaellbarros.model.dto.v1.PersonDTO
+import br.com.rafaellbarros.model.dto.v2.PersonDTO as PersonDTOV2
 import br.com.rafaellbarros.model.entity.Person
 import br.com.rafaellbarros.model.mapper.DozerMapper
+import br.com.rafaellbarros.model.mapper.custom.PersonMapper
 import br.com.rafaellbarros.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,10 +14,13 @@ import java.util.logging.Logger
 @Service
 class PersonService {
 
+    private val logger = Logger.getLogger(PersonService::class.java.name)
+
     @Autowired
     private lateinit var repository: PersonRepository
 
-    private val logger = Logger.getLogger(PersonService::class.java.name)
+    @Autowired
+    private lateinit var mapper: PersonMapper
 
     fun findAll(): List<PersonDTO> {
         logger.info("Finding all people!")
@@ -33,6 +38,12 @@ class PersonService {
         logger.info("Creating one person with name ${person.firstName}!")
         val entity: Person = DozerMapper.parseObject(person, Person::class.java)
         return DozerMapper.parseObject(repository.save(entity), PersonDTO::class.java)
+    }
+
+    fun createV2(person: PersonDTOV2) : PersonDTOV2 {
+        logger.info("Creating one person with name ${person.firstName}!")
+        val entity: Person = mapper.mapDTOToEntity(person)
+        return mapper.mapEntityToDTO(repository.save(entity))
     }
 
     fun update(person: PersonDTO) : PersonDTO {

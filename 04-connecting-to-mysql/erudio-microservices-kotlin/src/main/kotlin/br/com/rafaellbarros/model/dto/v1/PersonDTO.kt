@@ -1,4 +1,4 @@
-package br.com.rafaellbarros.model.dto
+package br.com.rafaellbarros.model.dto.v1
 
 data class PersonDTO (
 
