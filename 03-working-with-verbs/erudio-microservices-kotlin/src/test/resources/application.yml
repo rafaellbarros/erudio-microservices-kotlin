@@ -1,0 +1,9 @@
+project:
+  description: REST com Spring Boot 3 e Kotlin
+  version: 1.0.0-SNAPSHOT
+
+spring:
+  application:
+    name: erudio-microservices-kotlin
+  boot:
+    version: 3.4.0-M1
